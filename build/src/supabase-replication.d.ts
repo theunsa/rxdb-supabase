@@ -1,7 +1,6 @@
 import { SupabaseClient } from "@supabase/supabase-js";
-import { RxReplicationWriteToMasterRow } from "rxdb";
+import { ReplicationOptions, ReplicationPullOptions, ReplicationPushOptions, RxReplicationWriteToMasterRow } from "rxdb";
 import { RxReplicationState } from "rxdb/plugins/replication";
-import { ReplicationOptions, ReplicationPullOptions, ReplicationPushOptions } from "./rxdb-internal-types.js";
 export type SupabaseReplicationOptions<RxDocType> = {
     /**
      * The SupabaseClient to replicate with.

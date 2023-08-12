@@ -132,7 +132,7 @@ class SupabaseReplication extends RxReplicationState {
     return count == 1;
   }
   watchPostgresChanges() {
-    this.realtimeChannel = this.options.supabaseClient.channel("any").on("postgres_changes", { event: "*", schema: "public", table: this.table }, (payload) => {
+    this.realtimeChannel = this.options.supabaseClient.channel(`rxdb-supabase-${this.replicationIdentifierHash}`).on("postgres_changes", { event: "*", schema: "public", table: this.table }, (payload) => {
       if (payload.eventType === "DELETE" || !payload.new)
         return;
       this.realtimeChanges.next({
