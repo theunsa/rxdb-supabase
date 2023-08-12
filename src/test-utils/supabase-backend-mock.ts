@@ -36,6 +36,9 @@ export class SupabaseBackendMock {
       global: {
         fetch: this.fetch.bind(this),
       },
+      auth: {
+        persistSession: false,
+      },
     })
     const hackedClient = this.client as any
     hackedClient.realtime = instance(this.realtimeClientMock)
@@ -122,9 +125,9 @@ export class SupabaseBackendMock {
 
   expectRealtimeSubscription<T extends Record<string, any>>(
     table: string,
+    topic: string,
     event = "*",
-    schema = "public",
-    topic = "any"
+    schema = "public"
   ) {
     const channelMock = mock(RealtimeChannel)
     let capturedCallback: (payload: RealtimePostgresChangesPayload<T>) => void

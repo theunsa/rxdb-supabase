@@ -1,17 +1,15 @@
 import { RealtimeChannel, SupabaseClient } from "@supabase/supabase-js"
 import {
+  ReplicationOptions,
   ReplicationPullHandlerResult,
+  ReplicationPullOptions,
+  ReplicationPushOptions,
   RxReplicationPullStreamItem,
   RxReplicationWriteToMasterRow,
   WithDeleted,
 } from "rxdb"
 import { RxReplicationState } from "rxdb/plugins/replication"
 import { Subject } from "rxjs"
-import {
-  ReplicationOptions,
-  ReplicationPullOptions,
-  ReplicationPushOptions,
-} from "./rxdb-internal-types.js"
 
 const DEFAULT_LAST_MODIFIED_FIELD = "_modified"
 const DEFAULT_DELETED_FIELD = "_deleted"
@@ -269,7 +267,7 @@ export class SupabaseReplication<RxDocType> extends RxReplicationState<
 
   private watchPostgresChanges() {
     this.realtimeChannel = this.options.supabaseClient
-      .channel("any")
+      .channel(`rxdb-supabase-${this.replicationIdentifierHash}`)
       .on("postgres_changes", { event: "*", schema: "public", table: this.table }, (payload) => {
         if (payload.eventType === "DELETE" || !payload.new) return // Should have set _deleted field already
         //console.debug('Realtime event received:', payload)
