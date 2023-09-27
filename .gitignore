@@ -1,5 +1,8 @@
-build/
 node_modules/
 .nyc_output/
 coverage/
 .DS_Store
+build/src/test-utils
+
+# Allow build to be committed
+!build
