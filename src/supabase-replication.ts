@@ -1,3 +1,11 @@
+/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable eslint-comments/no-duplicate-disable */
+/* eslint-disable @typescript-eslint/no-dynamic-delete */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { RealtimeChannel, SupabaseClient } from "@supabase/supabase-js"
 import {
   ReplicationOptions,
@@ -124,7 +132,7 @@ export class SupabaseReplication<RxDocType> extends RxReplicationState<
       options.pull && {
         ...options.pull,
         stream$: realtimeChanges,
-        handler: (lastCheckpoint, batchSize) => this.pullHandler(lastCheckpoint, batchSize),
+        handler: (lastCheckpoint, batchSize) => this.pullHandler(lastCheckpoint as SupabaseReplicationCheckpoint, batchSize),
       },
       options.push && {
         ...options.push,
@@ -141,7 +149,7 @@ export class SupabaseReplication<RxDocType> extends RxReplicationState<
     this.lastModifiedFieldName = options.pull?.lastModifiedField || DEFAULT_LAST_MODIFIED_FIELD
 
     if (this.autoStart) {
-      this.start()
+      void this.start()
     }
   }
 
@@ -267,7 +275,7 @@ export class SupabaseReplication<RxDocType> extends RxReplicationState<
 
   private watchPostgresChanges() {
     this.realtimeChannel = this.options.supabaseClient
-      .channel(`rxdb-supabase-${this.replicationIdentifierHash}`)
+      .channel(`rxdb-supabase-${this.replicationIdentifier}`)
       .on("postgres_changes", { event: "*", schema: "public", table: this.table }, (payload) => {
         if (payload.eventType === "DELETE" || !payload.new) return // Should have set _deleted field already
         //console.debug('Realtime event received:', payload)

@@ -1,6 +1,6 @@
 {
   "name": "rxdb-supabase",
-  "version": "1.0.4",
+  "version": "1.0.5-ta",
   "description": "Offline support for Supabase using RxDB, an offline-first database",
   "keywords": [
     "rxdb",
@@ -55,7 +55,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.32.0",
-    "rxdb": "^14.15.1",
+    "rxdb": "^15.3.0",
     "rxjs": "^7.8.1"
   },
   "devDependencies": {

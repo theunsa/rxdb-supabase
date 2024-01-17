@@ -31,7 +31,7 @@ class SupabaseReplication extends RxReplicationState {
     this.primaryKey = options.primaryKey || options.collection.schema.primaryPath;
     this.lastModifiedFieldName = options.pull?.lastModifiedField || DEFAULT_LAST_MODIFIED_FIELD;
     if (this.autoStart) {
-      this.start();
+      void this.start();
     }
   }
   table;
@@ -132,7 +132,7 @@ class SupabaseReplication extends RxReplicationState {
     return count == 1;
   }
   watchPostgresChanges() {
-    this.realtimeChannel = this.options.supabaseClient.channel(`rxdb-supabase-${this.replicationIdentifierHash}`).on("postgres_changes", { event: "*", schema: "public", table: this.table }, (payload) => {
+    this.realtimeChannel = this.options.supabaseClient.channel(`rxdb-supabase-${this.replicationIdentifier}`).on("postgres_changes", { event: "*", schema: "public", table: this.table }, (payload) => {
       if (payload.eventType === "DELETE" || !payload.new)
         return;
       this.realtimeChanges.next({
