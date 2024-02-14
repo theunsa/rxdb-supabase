@@ -150,7 +150,6 @@ class SupabaseReplication extends RxReplicationState {
     return this.rowToRxDoc(data[0]);
   }
   rowToRxDoc(row) {
-    delete row[this.lastModifiedFieldName];
     return row;
   }
   rowToCheckpoint(row) {
