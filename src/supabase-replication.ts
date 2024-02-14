@@ -300,7 +300,8 @@ export class SupabaseReplication<RxDocType> extends RxReplicationState<
 
   private rowToRxDoc(row: any): WithDeleted<RxDocType> {
     // TODO: Don't delete the field if it is actually part of the collection
-    delete row[this.lastModifiedFieldName]
+    // TA: i need this field, so keep it
+    //delete row[this.lastModifiedFieldName]
     return row as WithDeleted<RxDocType>
   }
 
